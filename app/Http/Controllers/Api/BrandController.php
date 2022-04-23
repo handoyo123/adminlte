@@ -11,10 +11,10 @@ use App\Models\Brand;
 
 class BrandController extends ApiBaseController
 {
-	protected $model = Brand::class;
+    protected $model = Brand::class;
 
-	protected $indexRequest = IndexRequest::class;
-	protected $storeRequest = StoreRequest::class;
-	protected $updateRequest = UpdateRequest::class;
-	protected $deleteRequest = DeleteRequest::class;
+    protected $indexRequest = IndexRequest::class;
+    protected $storeRequest = StoreRequest::class;
+    protected $updateRequest = UpdateRequest::class;
+    protected $deleteRequest = DeleteRequest::class;
 }

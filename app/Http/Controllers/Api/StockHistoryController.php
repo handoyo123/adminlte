@@ -8,7 +8,7 @@ use App\Models\StockHistory;
 
 class StockHistoryController extends ApiBaseController
 {
-	protected $model = StockHistory::class;
+    protected $model = StockHistory::class;
 
-	protected $indexRequest = IndexRequest::class;
+    protected $indexRequest = IndexRequest::class;
 }

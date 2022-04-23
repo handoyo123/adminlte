@@ -8,20 +8,21 @@ use Illuminate\Support\Facades\File;
 
 class UserObserver
 {
-	public function updating(User $user)
-	{
-		$original = $user->getOriginal();
-		if ($user->isDirty('image')) {
-			$userImagePath = Common::getFolderPath('userImagePath');
+    public function updating(User $user)
+    {
+        $original = $user->getOriginal();
+        if ($user->isDirty('image')) {
+            $userImagePath = Common::getFolderPath('userImagePath');
 
-			File::delete($userImagePath . $original['image']);
-		}
-	}
+            File::delete($userImagePath . $original['image']);
+        }
+    }
 
-	public function deleting(User $user)
-	{
-		$userImagePath = Common::getFolderPath('userImagePath');
+    /** @noinspection PhpUndefinedFieldInspection */
+    public function deleting(User $user)
+    {
+        $userImagePath = Common::getFolderPath('userImagePath');
 
-		File::delete($userImagePath . $user->image);
-	}
+        File::delete($userImagePath . $user->image);
+    }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Classes;
 
+use Illuminate\Contracts\Translation\Translator;
 use Illuminate\Contracts\Validation\Validator;
 
 /**
@@ -16,7 +17,7 @@ class Reply
      * @param null $data
      * @return array
      */
-    public static function success($messageOrData, $data = null)
+    public static function success($messageOrData, $data = null): array
     {
         $response = [
             'status' => 'success'
@@ -26,7 +27,7 @@ class Reply
             $response['message'] = Reply::getTranslated($messageOrData);
         }
 
-        if (is_array($data)){
+        if (is_array($data)) {
             $response = array_merge($data, $response);
         }
 
@@ -39,11 +40,26 @@ class Reply
 
     /**
      * @param $message
+     * @return Translator|string
+     */
+    private static function getTranslated($message)
+    {
+        $trans = trans($message);
+
+        if ($trans == $message) {
+            return $message;
+        } else {
+            return $trans;
+        }
+    }
+
+    /**
+     * @param $message
      * @param null $errorName
      * @param array $errorData
      * @return array
      */
-    public static function error($message, $errorName = null, $errorData = [])
+    public static function error($message, $errorName = null, array $errorData = []): array
     {
         return [
             'status' => 'fail',
@@ -58,7 +74,7 @@ class Reply
      * @return array
      */
 
-    public static function formErrors($validator)
+    public static function formErrors($validator): array
     {
         return [
             'status' => 'fail',
@@ -74,7 +90,7 @@ class Reply
      * @return array
      */
 
-    public static function redirect($url, $message = null)
+    public static function redirect(string $url, $message = null): array
     {
         if ($message) {
             return [
@@ -83,29 +99,12 @@ class Reply
                 'action' => 'redirect',
                 'url' => $url
             ];
-        }
-        else {
+        } else {
             return [
                 'status' => 'success',
                 'action' => 'redirect',
                 'url' => $url
             ];
-        }
-    }
-
-    /**
-     * @param $message
-     * @return \Illuminate\Contracts\Translation\Translator|string
-     */
-    private static function getTranslated($message)
-    {
-        $trans = trans($message);
-
-        if ($trans == $message) {
-            return $message;
-        }
-        else {
-            return $trans;
         }
     }
 
@@ -118,7 +117,7 @@ class Reply
         return $data;
     }
 
-    public static function successWithData($data)
+    public static function successWithData($data): array
     {
         $response = [
             'status' => 'success'

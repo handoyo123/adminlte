@@ -2,17 +2,20 @@
 
 namespace App\Models;
 
+/**
+ * @method static where(string $string, string $string1)
+ */
 class PaymentMode extends BaseModel
 {
-	protected $table = 'payment_modes';
+    protected $table = 'payment_modes';
 
-	protected $default = ['xid', 'name'];
+    protected $default = ['xid', 'name'];
 
-	protected $guarded = ['id', 'created_at', 'updated_at'];
+    protected $guarded = ['id', 'created_at', 'updated_at'];
 
-	protected $filterable = ['name'];
+    protected $filterable = ['name'];
 
-	protected $hidden = ['id'];
+    protected $hidden = ['id'];
 
-	protected $appends = ['xid'];
+    protected $appends = ['xid'];
 }

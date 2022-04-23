@@ -9,41 +9,41 @@ use Vinkla\Hashids\Facades\Hashids;
 
 class UpdateRequest extends FormRequest
 {
-	/**
-	 * Determine if the user is authorized to make this request.
-	 *
-	 * @return bool
-	 */
+    /**
+     * Determine if the user is authorized to make this request.
+     *
+     * @return bool
+     */
 
-	public function authorize()
-	{
-		return true;
-	}
+    public function authorize(): bool
+    {
+        return true;
+    }
 
-	/**
-	 * Get the validation rules that apply to the request.
-	 *
-	 * @return array
-	 */
-	public function rules()
-	{
-		$convertedId = Hashids::decode($this->order_id);
-		$orderId = $convertedId[0];
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array
+     * @noinspection PhpUndefinedFieldInspection
+     * @noinspection PhpUndefinedFieldInspection
+     */
+    public function rules(): array
+    {
+        $convertedId = Hashids::decode($this->order_id);
+        $orderId = $convertedId[0];
 
-		$convertedOrderPaymentId = Hashids::decode($this->order_payment);
-		$orderPaymentId = $convertedOrderPaymentId[0];
+        $convertedOrderPaymentId = Hashids::decode($this->order_payment);
+        $orderPaymentId = $convertedOrderPaymentId[0];
 
-		$orderPayment = OrderPayment::find($orderPaymentId);
-		$order = Order::find($orderId);
-		$dueAmount = $order->due_amount + $orderPayment->amount;
+        $orderPayment = OrderPayment::find($orderPaymentId);
+        $order = Order::find($orderId);
+        $dueAmount = $order->due_amount + $orderPayment->amount;
 
-		$rules = [
-			'date'    => 'required',
-			'payment_mode_id'    => 'required',
-			'amount'    => 'required|numeric|lte:' . $dueAmount,
-			'payment_receipt'    => 'mimes:jpeg,png,jpg,pdf',
-		];
-
-		return $rules;
-	}
+        return [
+            'date' => 'required',
+            'payment_mode_id' => 'required',
+            'amount' => 'required|numeric|lte:' . $dueAmount,
+            'payment_receipt' => 'mimes:jpeg,png,jpg,pdf',
+        ];
+    }
 }

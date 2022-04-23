@@ -12,19 +12,19 @@ use App\Traits\PartyTraits;
 
 class CustomersController extends ApiBaseController
 {
-	use PartyTraits;
+    use PartyTraits;
 
-	protected $model = Customer::class;
+    protected $model = Customer::class;
 
-	protected $indexRequest = IndexRequest::class;
-	protected $storeRequest = StoreRequest::class;
-	protected $updateRequest = UpdateRequest::class;
-	protected $deleteRequest = DeleteRequest::class;
+    protected $indexRequest = IndexRequest::class;
+    protected $storeRequest = StoreRequest::class;
+    protected $updateRequest = UpdateRequest::class;
+    protected $deleteRequest = DeleteRequest::class;
 
-	public function __construct()
-	{
-		parent::__construct();
+    public function __construct()
+    {
+        parent::__construct();
 
-		$this->userType = "customers";
-	}
+        $this->userType = "customers";
+    }
 }

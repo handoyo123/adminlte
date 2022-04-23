@@ -4,25 +4,28 @@ namespace App\Models;
 
 use App\Casts\Hash;
 
+/**
+ * @method static where(string $string, mixed $id)
+ */
 class Translation extends BaseModel
 {
-	protected  $table = 'translations';
+    protected $table = 'translations';
 
-	protected $default = ['xid'];
+    protected $default = ['xid'];
 
-	protected $guarded = ['id', 'created_at', 'updated_at'];
+    protected $guarded = ['id', 'created_at', 'updated_at'];
 
-	protected $filterable = ['name'];
+    protected $filterable = ['name'];
 
-	protected $hidden = ['id', 'lang_id'];
+    protected $hidden = ['id', 'lang_id'];
 
-	protected $appends = ['xid', 'x_lang_id'];
+    protected $appends = ['xid', 'x_lang_id'];
 
-	protected $hashableGetterFunctions = [
-		'getXLangIdAttribute' => 'lang_id'
-	];
+    protected $hashableGetterFunctions = [
+        'getXLangIdAttribute' => 'lang_id'
+    ];
 
-	protected $casts = [
-		'lang_id' => Hash::class . ':hash'
-	];
+    protected $casts = [
+        'lang_id' => Hash::class . ':hash'
+    ];
 }

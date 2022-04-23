@@ -13,73 +13,83 @@ use Examyou\RestAPI\Exceptions\ApiException;
 
 class ExpenseController extends ApiBaseController
 {
-	protected $model = Expense::class;
+    protected $model = Expense::class;
 
-	protected $indexRequest = IndexRequest::class;
-	protected $storeRequest = StoreRequest::class;
-	protected $updateRequest = UpdateRequest::class;
-	protected $deleteRequest = DeleteRequest::class;
+    protected $indexRequest = IndexRequest::class;
+    protected $storeRequest = StoreRequest::class;
+    protected $updateRequest = UpdateRequest::class;
+    protected $deleteRequest = DeleteRequest::class;
 
-	public function modifyIndex($query)
-	{
-		$warehouse = warehouse();
+    public function modifyIndex($query)
+    {
+        $warehouse = warehouse();
 
-		// If user not have admin role
-		// then he can only view reords
-		// of warehouse assigned to him
-		$query = $query->where('expenses.warehouse_id', $warehouse->id);
+        // If user not have admin role
+        // then he can only view reords
+        // of warehouse assigned to him
+        $query = $query->where('expenses.warehouse_id', $warehouse->id);
 
-		return $query;
-	}
+        return $query;
+    }
 
-	public function storing(Expense $expense)
-	{
-		$loggedUser = user();
-		$warehouse = warehouse();
+    /** @noinspection PhpUndefinedFieldInspection
+     * @noinspection PhpUndefinedFieldInspection
+     */
+    public function storing(Expense $expense)
+    {
+        $loggedUser = user();
+        $warehouse = warehouse();
 
-		$expense->user_id = $loggedUser->id;
-		$expense->warehouse_id = $warehouse->id;
+        $expense->user_id = $loggedUser->id;
+        $expense->warehouse_id = $warehouse->id;
 
-		return $expense;
-	}
+        return $expense;
+    }
 
-	public function stored(Expense $expense)
-	{
-		// Notifying to Warehouse
-		Notify::send('expense_create', $expense);
-	}
+    public function stored(Expense $expense)
+    {
+        // Notifying to Warehouse
+        Notify::send('expense_create', $expense);
+    }
 
-	public function updating(Expense $expense)
-	{
-		$loggedUser = user();
-		$warehouse = warehouse();
+    /** @noinspection PhpUndefinedFieldInspection
+     * @noinspection PhpUndefinedFieldInspection
+     */
+    public function updating(Expense $expense)
+    {
+        $loggedUser = user();
+        $warehouse = warehouse();
 
-		$expense->user_id = $loggedUser->id;
-		$expense->warehouse_id = $warehouse->id;
+        $expense->user_id = $loggedUser->id;
+        $expense->warehouse_id = $warehouse->id;
 
-		return $expense;
-	}
+        return $expense;
+    }
 
-	public function updated(Expense $expense)
-	{
-		// Notifying to Warehouse
-		Notify::send('expense_update', $expense);
-	}
+    public function updated(Expense $expense)
+    {
+        // Notifying to Warehouse
+        Notify::send('expense_update', $expense);
+    }
 
-	public function destroying(Expense $expense)
-	{
-		$loggedUser = user();
+    /** @noinspection PhpUndefinedFieldInspection */
+    /**
+     * @throws ApiException
+     */
+    public function destroying(Expense $expense)
+    {
+        $loggedUser = user();
 
-		if (!$loggedUser->hasRole('admin') && $loggedUser->id != $expense->user_id) {
-			throw new ApiException("Can not delete other user expense");
-		}
+        if (!$loggedUser->hasRole('admin') && $loggedUser->id != $expense->user_id) {
+            throw new ApiException("Can not delete other user expense");
+        }
 
-		return $expense;
-	}
+        return $expense;
+    }
 
-	public function destroyed(Expense $expense)
-	{
-		// Notifying to Warehouse
-		Notify::send('expense_delete', $expense);
-	}
+    public function destroyed(Expense $expense)
+    {
+        // Notifying to Warehouse
+        Notify::send('expense_delete', $expense);
+    }
 }

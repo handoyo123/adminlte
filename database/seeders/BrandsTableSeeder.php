@@ -3,17 +3,21 @@
 namespace Database\Seeders;
 
 use App\Models\Brand;
+use Examyou\RestAPI\Exceptions\RelatedResourceNotFoundException;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
 class BrandsTableSeeder extends Seeder
 {
-	/**
-	 * Run the database seeds.
-	 *
-	 * @return void
-	 */
+    /**
+     * Run the database seeds.
+     *
+     * @return void
+     * @throws RelatedResourceNotFoundException
+     * @noinspection PhpUndefinedFieldInspection
+     * @noinspection PhpUndefinedFieldInspection
+     */
 
 	public function run()
 	{

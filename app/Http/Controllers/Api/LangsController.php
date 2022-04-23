@@ -13,44 +13,52 @@ use Examyou\RestAPI\Exceptions\ApiException;
 
 class LangsController extends ApiBaseController
 {
-	protected $model = Lang::class;
+    protected $model = Lang::class;
 
-	protected $indexRequest = IndexRequest::class;
-	protected $storeRequest = StoreRequest::class;
-	protected $updateRequest = UpdateRequest::class;
-	protected $deleteRequest = DeleteRequest::class;
+    protected $indexRequest = IndexRequest::class;
+    protected $storeRequest = StoreRequest::class;
+    protected $updateRequest = UpdateRequest::class;
+    protected $deleteRequest = DeleteRequest::class;
 
-	public function stored(Lang $lang)
-	{
-		LangTrans::seedAllModulesTranslations();
-	}
+    public function stored(Lang $lang)
+    {
+        LangTrans::seedAllModulesTranslations();
+    }
 
-	public function updated(Lang $lang)
-	{
-		LangTrans::seedAllModulesTranslations();
-	}
+    public function updated(Lang $lang)
+    {
+        LangTrans::seedAllModulesTranslations();
+    }
 
-	public function updating(Lang $lang)
-	{
-		if ($lang->key == 'en') {
-			throw new ApiException('English language cannot be edited');
-		}
+    /** @noinspection PhpUndefinedFieldInspection */
+    /**
+     * @throws ApiException
+     */
+    public function updating(Lang $lang)
+    {
+        if ($lang->key == 'en') {
+            throw new ApiException('English language cannot be edited');
+        }
 
-		return $lang;
-	}
+        return $lang;
+    }
 
-	public function destroying(Lang $lang)
-	{
-		if ($lang->key == 'en') {
-			throw new ApiException('English language cannot be deleted');
-		}
+    /** @noinspection PhpUndefinedFieldInspection
+     * @noinspection PhpUndefinedFieldInspection
+     * @throws ApiException
+     */
+    public function destroying(Lang $lang)
+    {
+        if ($lang->key == 'en') {
+            throw new ApiException('English language cannot be deleted');
+        }
 
-		if ($lang->id == $this->company->lang_id) {
-			$enLang = Lang::where('key', 'en')->first();
-			$this->company->lang_id = $enLang->id;
-			$this->company->save();
-		}
+        if ($lang->id == $this->company->lang_id) {
+            $enLang = Lang::where('key', 'en')->first();
+            $this->company->lang_id = $enLang->id;
+            $this->company->save();
+        }
 
-		return $lang;
-	}
+        return $lang;
+    }
 }

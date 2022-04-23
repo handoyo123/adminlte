@@ -12,19 +12,23 @@ use Examyou\RestAPI\Exceptions\ApiException;
 
 class CurrencyController extends ApiBaseController
 {
-	protected $model = Currency::class;
+    protected $model = Currency::class;
 
-	protected $indexRequest = IndexRequest::class;
-	protected $storeRequest = StoreRequest::class;
-	protected $updateRequest = UpdateRequest::class;
-	protected $deleteRequest = DeleteRequest::class;
+    protected $indexRequest = IndexRequest::class;
+    protected $storeRequest = StoreRequest::class;
+    protected $updateRequest = UpdateRequest::class;
+    protected $deleteRequest = DeleteRequest::class;
 
-	public function destroying(Currency $currency)
-	{
-		if ($currency->id == $this->company->currency_id) {
-			throw new ApiException('Default currency cannot be deleted');
-		}
+    /** @noinspection PhpUndefinedFieldInspection */
+    /**
+     * @throws ApiException
+     */
+    public function destroying(Currency $currency)
+    {
+        if ($currency->id == $this->company->currency_id) {
+            throw new ApiException('Default currency cannot be deleted');
+        }
 
-		return $currency;
-	}
+        return $currency;
+    }
 }

@@ -1,9 +1,12 @@
-<?php
+<?php /** @noinspection PhpUndefinedNamespaceInspection */
 
 namespace App\Classes;
 
+use Exception;
+use Illuminate\Http\File;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\ImageManagerStatic as Image;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * Class Reply
@@ -12,142 +15,144 @@ use Intervention\Image\ImageManagerStatic as Image;
 class Files
 {
 
-	/**
-	 * @param $image
-	 * @param $dir
-	 * @param null $width
-	 * @param int $height
-	 * @param $crop
-	 * @return string
-	 * @throws \Exception
-	 */
+    /**
+     * @throws Exception
+     */
+    public static function uploadLocalOrS3($uploadedFile, $dir): string
+    {
+        if (!$uploadedFile->isValid()) {
+            throw new Exception('File was not uploaded correctly');
+        }
 
-	public static function upload($image, $dir, $width = null, $height = 800, $crop = false)
-	{
-		config(['filesystems.default' => 'local']);
+        $newName = self::generateNewFileName($uploadedFile->getClientOriginalName());
 
-		/** @var UploadedFile $uploadedFile */
-		$uploadedFile = $image;
-		$folder = $dir;
+        if (config('filesystems.default') === 'local') {
+            return self::upload($uploadedFile, $dir, false, false, false);
+        }
 
-		if (!$uploadedFile->isValid()) {
-			throw new \Exception('File was not uploaded correctly');
-		}
+        Storage::disk('s3')->putFileAs($dir, $uploadedFile, $newName, 'public');
+        return $newName;
+    }
 
-		$newName = self::generateNewFileName($uploadedFile->getClientOriginalName());
+    public static function generateNewFileName($currentFileName): string
+    {
+        $ext = strtolower(File::extension($currentFileName));
+        $newName = md5(microtime());
 
-		$tempPath = public_path('images/uploads/temp/' . $newName);
+        if ($ext === '') {
+            return $newName;
+        }
 
-		/** Check if folder exits or not. If not then create the folder */
-		if (!\File::exists(public_path('images/uploads/' . $folder))) {
-			\File::makeDirectory(public_path('images/uploads/' . $folder), 0775, true);
-		}
+        return $newName . '.' . $ext;
+    }
 
-		$newPath = $folder . '/' . $newName;
+    /**
+     * @param $image
+     * @param $dir
+     * @param null $width
+     * @param int $height
+     * @param bool $crop
+     * @return string
+     * @throws Exception
+     */
 
-		/** @var UploadedFile $uploadedFile */
-		$uploadedFile->storeAs('temp', $newName);
+    public static function upload($image, $dir, $width = null, int $height = 800, bool $crop = false): string
+    {
+        config(['filesystems.default' => 'local']);
 
-		if (!empty($crop)) {
-			// Crop image
-			if (isset($crop[0])) {
-				// To store the multiple images for the copped ones
-				foreach ($crop as $cropped) {
-					$image = Image::make($tempPath);
+        /** @var UploadedFile $uploadedFile */
+        $uploadedFile = $image;
+        $folder = $dir;
 
-					if (isset($cropped['resize']['width']) && isset($cropped['resize']['height'])) {
+        if (!$uploadedFile->isValid()) {
+            throw new Exception('File was not uploaded correctly');
+        }
 
-						$image->crop(floor($cropped['width']), floor($cropped['height']), floor($cropped['x']), floor($cropped['y']));
+        $newName = self::generateNewFileName($uploadedFile->getClientOriginalName());
 
-						$fileName = str_replace('.', '_' . $cropped['resize']['width'] . 'x' . $cropped['resize']['height'] . '.', $newName);
-						$tempPathCropped = public_path('user-uploads/temp') . '/' . $fileName;
-						$newPathCropped = $folder . '/' . $fileName;
+        $tempPath = public_path('images/uploads/temp/' . $newName);
 
-						// Resize in Proper format
-						$image->resize($cropped['resize']['width'], $cropped['resize']['height'], function ($constraint) {
-							//$constraint->aspectRatio();
-							// $constraint->upsize();
-						});
+        /** Check if folder exits or not. If not then create the folder */
+        if (!File::exists(public_path('images/uploads/' . $folder))) {
+            File::makeDirectory(public_path('images/uploads/' . $folder), 0775, true);
+        }
 
-						$image->save($tempPathCropped);
+        $newPath = $folder . '/' . $newName;
 
-						\Storage::put($newPathCropped, \File::get($tempPathCropped), ['public']);
+        $uploadedFile->storeAs('temp', $newName);
 
-						// Deleting cropped temp file
-						\File::delete($tempPathCropped);
-					}
-				}
-			} else {
-				$image = Image::make($tempPath);
-				$image->crop(floor($crop['width']), floor($crop['height']), floor($crop['x']), floor($crop['y']));
-				$image->save();
-			}
-		}
+        if (!empty($crop)) {
+            // Crop image
+            if (isset($crop[0])) {
+                // To store the multiple images for the copped ones
+                foreach ($crop as $cropped) {
+                    $image = Image::make($tempPath);
 
-		if (($width || $height)) {
-			// Crop image
+                    if (isset($cropped['resize']['width']) && isset($cropped['resize']['height'])) {
 
-			$image = Image::make($tempPath);
-			$image->resize($width, $height, function ($constraint) {
-				$constraint->aspectRatio();
-				$constraint->upsize();
-			});
-			$image->save();
-		}
+                        $image->crop(floor($cropped['width']), floor($cropped['height']), floor($cropped['x']), floor($cropped['y']));
 
-		\Storage::put($newPath, \File::get($tempPath), ['public']);
+                        $fileName = str_replace('.', '_' . $cropped['resize']['width'] . 'x' . $cropped['resize']['height'] . '.', $newName);
+                        $tempPathCropped = public_path('user-uploads/temp') . '/' . $fileName;
+                        $newPathCropped = $folder . '/' . $fileName;
 
-		// Deleting temp file
-		\File::delete($tempPath);
+                        // Resize in Proper format
+                        $image->resize($cropped['resize']['width'], $cropped['resize']['height'], function ($constraint) {
+                            //$constraint->aspectRatio();
+                            // $constraint->upsize();
+                        });
+
+                        $image->save($tempPathCropped);
+
+                        Storage::put($newPathCropped, File::get($tempPathCropped), ['public']);
+
+                        // Deleting cropped temp file
+                        File::delete($tempPathCropped);
+                    }
+                }
+            } else {
+                $image = Image::make($tempPath);
+                $image->crop(floor($crop['width']), floor($crop['height']), floor($crop['x']), floor($crop['y']));
+                $image->save();
+            }
+        }
+
+        if (($width || $height)) {
+            // Crop image
+
+            $image = Image::make($tempPath);
+            $image->resize($width, $height, function ($constraint) {
+                $constraint->aspectRatio();
+                $constraint->upsize();
+            });
+            $image->save();
+        }
+
+        Storage::put($newPath, File::get($tempPath), ['public']);
+
+        // Deleting temp file
+        File::delete($tempPath);
 
 
-		return $newName;
-	}
+        return $newName;
+    }
 
-	public static function generateNewFileName($currentFileName)
-	{
-		$ext = strtolower(\File::extension($currentFileName));
-		$newName = md5(microtime());
+    public static function deleteFile($image, $folder): bool
+    {
+        $dir = trim($folder, '/');
+        $path = $dir . '/' . $image;
 
-		if ($ext === '') {
-			return $newName;
-		}
+        if (!File::exists(public_path($path))) {
+            Storage::delete($path);
+        }
 
-		return $newName . '.' . $ext;
-	}
+        return true;
+    }
 
-	public static function uploadLocalOrS3($uploadedFile, $dir)
-	{
-		if (!$uploadedFile->isValid()) {
-			throw new \Exception('File was not uploaded correctly');
-		}
-
-		$newName = self::generateNewFileName($uploadedFile->getClientOriginalName());
-
-		if (config('filesystems.default') === 'local') {
-			return self::upload($uploadedFile, $dir, false, false, false);
-		}
-
-		Storage::disk('s3')->putFileAs($dir, $uploadedFile, $newName, 'public');
-		return $newName;
-	}
-
-	public static function deleteFile($image, $folder)
-	{
-		$dir = trim($folder, '/');
-		$path = $dir . '/' . $image;
-
-		if (!\File::exists(public_path($path))) {
-			\Storage::delete($path);
-		}
-
-		return true;
-	}
-
-	public static function deleteDirectory($folder)
-	{
-		$dir = trim($folder);
-		\Storage::deleteDirectory($dir);
-		return true;
-	}
+    public static function deleteDirectory($folder): bool
+    {
+        $dir = trim($folder);
+        Storage::deleteDirectory($dir);
+        return true;
+    }
 }

@@ -8,95 +8,108 @@ use App\Models\Settings;
 use Examyou\RestAPI\ApiController;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
+use Illuminate\Http\JsonResponse;
 
 class ApiBaseController extends ApiController
 {
-	use AuthorizesRequests, DispatchesJobs;
+    use AuthorizesRequests, DispatchesJobs;
 
-	public $company = [];
+    public $company = [];
 
-	public function __construct()
-	{
-		parent::__construct();
+    public function __construct()
+    {
+        parent::__construct();
 
-		$this->company = Company::first();
+        $this->company = Company::first();
 
-		$this->middleware(function ($request, $next) {
+        $this->middleware(function ($request, $next) {
 
-			// Mail and config settings will we set by SmtpSettingsProvider
-			$this->setStorageSettings();
+            // Mail and config settings will we set by SmtpSettingsProvider
+            $this->setStorageSettings();
 
-			return $next($request);
-		});
-	}
+            return $next($request);
+        });
+    }
 
-	public function setStorageSettings()
-	{
-		$storageSetting = Settings::where('setting_type', 'storage')->where('status', 1)->first();
+    public function setStorageSettings()
+    {
+        $storageSetting = Settings::where('setting_type', 'storage')->where('status', 1)->first();
 
-		$storageName = $storageSetting && $storageSetting->name_key == 'aws' ? 's3' : 'local';
+        $storageName = $storageSetting && $storageSetting->name_key == 'aws' ? 's3' : 'local';
 
-		config(['filesystems.default' => $storageName]);
+        config(['filesystems.default' => $storageName]);
 
-		if ($storageName == 's3') {
-			config([
-				'filesystems.disks.s3.key' => $storageSetting->credentials['key'],
-				'filesystems.disks.s3.secret' => $storageSetting->credentials['secret'],
-				'filesystems.disks.s3.region' => $storageSetting->credentials['region'],
-				'filesystems.disks.s3.bucket' => $storageSetting->credentials['bucket'],
-			]);
-		}
-	}
+        if ($storageName == 's3') {
+            config([
+                'filesystems.disks.s3.key' => $storageSetting->credentials['key'],
+                'filesystems.disks.s3.secret' => $storageSetting->credentials['secret'],
+                'filesystems.disks.s3.region' => $storageSetting->credentials['region'],
+                'filesystems.disks.s3.bucket' => $storageSetting->credentials['bucket'],
+            ]);
+        }
+    }
 
-	public function getTransactionNumber($type, $number)
-	{
-		$prefixs = [
-			'payment-in' => 'PAY-IN-',
-			'payment-out' => 'PAY-IN-',
-			'sales' => 'SALE-',
-			'purchase' => 'PUR-',
-		];
+    public function getTransactionNumber($type, $number)
+    {
+        $prefixs = [
+            'payment-in' => 'PAY-IN-',
+            'payment-out' => 'PAY-IN-',
+            'sales' => 'SALE-',
+            'purchase' => 'PUR-',
+        ];
 
-		return $prefixs[$type] . $number;
-	}
+        return $prefixs[$type] . $number;
+    }
 
-	public function getIdFromHash($hash)
-	{
-		return Common::getIdFromHash($hash);
-	}
+    /**
+     * @param $values
+     * @return array
+     */
+    public function getIdArrayFromHash($values)
+    {
+        $convertedArray = [];
 
-	public function getHashFromId($id)
-	{
-		return Common::getHashFromId($id);
-	}
+        foreach ($values as $value) {
+            $convertedArray[] = $this->getIdFromHash($value);
+        }
 
-	public function getIdArrayFromHash($values)
-	{
-		$convertedArray = [];
+        return $convertedArray;
+    }
 
-		foreach ($values as $value) {
-			$convertedArray[] = $this->getIdFromHash($value);
-		}
+    public function getIdFromHash($hash)
+    {
+        return Common::getIdFromHash($hash);
+    }
 
-		return $convertedArray;
-	}
+    /**
+     * @param $values
+     * @return array
+     */
+    public function getHashArrayFromId($values)
+    {
+        $convertedArray = [];
 
-	public function getHashArrayFromId($values)
-	{
-		$convertedArray = [];
+        foreach ($values as $value) {
+            $convertedArray[] = $this->getHashFromId($value);
+        }
 
-		foreach ($values as $value) {
-			$convertedArray[] = $this->getHashFromId($value);
-		}
+        return $convertedArray;
+    }
 
-		return $convertedArray;
-	}
+    public function getHashFromId($id)
+    {
+        return Common::getHashFromId($id);
+    }
 
-	public function errorMessageResponse($message)
-	{
-		return response()->json([
-			'code' => 403,
-			'message' => $message
-		], 403);
-	}
+    /**
+     * @param $message
+     * @return JsonResponse
+     */
+    public function errorMessageResponse($message)
+    {
+        return response()->json([
+            'code' => 403,
+            'message' => $message
+        ], 403);
+    }
 }

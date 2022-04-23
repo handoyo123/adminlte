@@ -3,17 +3,21 @@
 namespace Database\Seeders;
 
 use App\Models\CustomField;
+use Examyou\RestAPI\Exceptions\RelatedResourceNotFoundException;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
 class ProductTableSeeder extends Seeder
 {
-	/**
-	 * Run the database seeds.
-	 *
-	 * @return void
-	 */
+    /**
+     * Run the database seeds.
+     *
+     * @return void
+     * @noinspection PhpUndefinedFieldInspection
+     * @noinspection PhpUndefinedFieldInspection
+     * @throws RelatedResourceNotFoundException
+     */
 
 	public function run()
 	{

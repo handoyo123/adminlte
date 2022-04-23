@@ -8,7 +8,7 @@ use App\Models\Permission;
 
 class PermissionController extends ApiBaseController
 {
-	protected $model = Permission::class;
+    protected $model = Permission::class;
 
-	protected $indexRequest = IndexRequest::class;
+    protected $indexRequest = IndexRequest::class;
 }

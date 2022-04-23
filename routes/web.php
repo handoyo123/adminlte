@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection LaravelFunctionsInspection */
 
 use App\Classes\Common;
 use App\Models\Company;

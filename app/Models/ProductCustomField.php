@@ -4,32 +4,33 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 
+/**
+ * @method static withoutGlobalScope(string $string)
+ */
 class ProductCustomField extends BaseModel
 {
-	protected  $table = 'product_custom_fields';
+    public $timestamps = false;
+    protected $table = 'product_custom_fields';
+    protected $default = ['xid', 'field_name'];
 
-	public $timestamps = false;
+    protected $guarded = ['id'];
 
-	protected $default = ['xid', 'field_name'];
+    protected $hidden = ['id'];
 
-	protected $guarded = ['id'];
+    protected $appends = ['xid'];
 
-	protected $hidden = ['id'];
+    protected $filterable = ['field_name'];
 
-	protected $appends = ['xid'];
+    protected static function boot()
+    {
+        parent::boot();
 
-	protected $filterable = ['field_name'];
+        static::addGlobalScope('current_warehouse', function (Builder $builder) {
+            $warehouse = warehouse();
 
-	protected static function boot()
-	{
-		parent::boot();
-
-		static::addGlobalScope('current_warehouse', function (Builder $builder) {
-			$warehouse = warehouse();
-
-			if ($warehouse) {
-				$builder->where('product_custom_fields.warehouse_id', $warehouse->id);
-			}
-		});
-	}
+            if ($warehouse) {
+                $builder->where('product_custom_fields.warehouse_id', $warehouse->id);
+            }
+        });
+    }
 }

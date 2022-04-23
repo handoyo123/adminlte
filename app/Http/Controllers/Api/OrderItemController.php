@@ -8,18 +8,16 @@ use App\Models\OrderItem;
 
 class OrderItemController extends ApiBaseController
 {
-	protected $model = OrderItem::class;
+    protected $model = OrderItem::class;
 
-	protected $indexRequest = IndexRequest::class;
+    protected $indexRequest = IndexRequest::class;
 
-	public function modifyIndex($query)
-	{
-		$request = request();
-		$warehouse = warehouse();
+    public function modifyIndex($query)
+    {
+        $request = request();
+        $warehouse = warehouse();
 
-		$query = $query->join('orders', 'orders.id', '=', 'order_items.order_id')
-			->where('orders.warehouse_id', $warehouse->id);
-
-		return $query;
-	}
+        return $query->join('orders', 'orders.id', '=', 'order_items.order_id')
+            ->where('orders.warehouse_id', $warehouse->id);
+    }
 }

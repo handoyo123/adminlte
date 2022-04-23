@@ -8,87 +8,96 @@ use Illuminate\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Hash as FacadesHash;
 use Trebol\Entrust\Traits\EntrustUserTrait;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
+/**
+ * @method static select(string $string, string $string1)
+ * @method static find($created_by)
+ */
 class User extends BaseModel implements AuthenticatableContract, JWTSubject
 {
-	use Notifiable, EntrustUserTrait, Authenticatable, HasFactory;
+    use Notifiable, EntrustUserTrait, Authenticatable, HasFactory;
 
-	protected $default = ["xid", "name", "profile_image"];
+    protected $default = ["xid", "name", "profile_image"];
 
-	protected $guarded = ['id', 'warehouse_id', 'opening_balance', 'opening_balance_type', 'credit_limit', 'credit_period', 'created_at', 'updated_at'];
+    protected $guarded = ['id', 'warehouse_id', 'opening_balance', 'opening_balance_type', 'credit_limit', 'credit_period', 'created_at', 'updated_at'];
 
-	protected $dates = ['last_active_on'];
+    protected $dates = ['last_active_on'];
 
-	protected $hidden = ['id', 'role_id',  'warehouse_id', 'password', 'remember_token'];
+    protected $hidden = ['id', 'role_id', 'warehouse_id', 'password', 'remember_token'];
 
-	protected $appends = ['xid', 'x_role_id', 'profile_image_url'];
+    protected $appends = ['xid', 'x_role_id', 'profile_image_url'];
 
-	protected $filterable = ['name', 'user_type', 'email', 'status', 'phone'];
+    protected $filterable = ['name', 'user_type', 'email', 'status', 'phone'];
 
-	protected $hashableGetterFunctions = [
-		'getXRoleIdAttribute' => 'role_id',
-		'getXWarehouseIdAttribute' => 'warehouse_id',
-	];
+    protected $hashableGetterFunctions = [
+        'getXRoleIdAttribute' => 'role_id',
+        'getXWarehouseIdAttribute' => 'warehouse_id',
+    ];
 
-	protected $casts = [
-		'role_id' => Hash::class . ':hash',
-		'warehouse_id' => Hash::class . ':hash',
-	];
+    protected $casts = [
+        'role_id' => Hash::class . ':hash',
+        'warehouse_id' => Hash::class . ':hash',
+    ];
 
-	protected static function boot()
-	{
-		parent::boot();
+    protected static function boot()
+    {
+        parent::boot();
 
-		static::addGlobalScope('type', function (Builder $builder) {
-			$builder->where('users.user_type', '=', 'staff_members');
-		});
-	}
+        static::addGlobalScope('type', function (Builder $builder) {
+            $builder->where('users.user_type', '=', 'staff_members');
+        });
+    }
 
-	public function setPasswordAttribute($value)
-	{
-		if ($value) {
-			$this->attributes['password'] = FacadesHash::make($value);
-		}
-	}
+    public function setPasswordAttribute($value)
+    {
+        if ($value) {
+            $this->attributes['password'] = FacadesHash::make($value);
+        }
+    }
 
-	public function getJWTIdentifier()
-	{
-		return $this->getKey();
-	}
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
 
-	public function getJWTCustomClaims()
-	{
-		return [];
-	}
+    public function getJWTCustomClaims(): array
+    {
+        return [];
+    }
 
-	public function setUserTypeAttribute($value)
-	{
-		$this->attributes['user_type'] = 'staff_members';
-	}
+    public function setUserTypeAttribute($value)
+    {
+        $this->attributes['user_type'] = 'staff_members';
+    }
 
-	public function getProfileImageUrlAttribute()
-	{
-		$userImagePath = Common::getFolderPath('userImagePath');
+    /** @noinspection PhpUndefinedFieldInspection
+     * @noinspection PhpUndefinedFieldInspection
+     */
+    public function getProfileImageUrlAttribute(): string
+    {
+        $userImagePath = Common::getFolderPath('userImagePath');
 
-		return $this->profile_image == null ? asset('images/user.png') : Common::getFileUrl($userImagePath, $this->profile_image);
-	}
+        return $this->profile_image == null ? asset('images/user.png') : Common::getFileUrl($userImagePath, $this->profile_image);
+    }
 
-	public function role()
-	{
-		return $this->belongsTo(Role::class);
-	}
+    public function role(): BelongsTo
+    {
+        return $this->belongsTo(Role::class);
+    }
 
-	public function details()
-	{
-		return $this->hasOne(UserDetails::class);
-	}
+    public function details(): HasOne
+    {
+        return $this->hasOne(UserDetails::class);
+    }
 
-	public function warehouse()
-	{
-		return $this->belongsTo(Warehouse::class);
-	}
+    public function warehouse(): BelongsTo
+    {
+        return $this->belongsTo(Warehouse::class);
+    }
 }

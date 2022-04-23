@@ -12,19 +12,19 @@ use App\Traits\OrderTraits;
 
 class PurchaseController extends ApiBaseController
 {
-	use OrderTraits;
+    use OrderTraits;
 
-	protected $model = Order::class;
+    protected $model = Order::class;
 
-	protected $indexRequest = IndexRequest::class;
-	protected $storeRequest = StoreRequest::class;
-	protected $updateRequest = UpdateRequest::class;
-	protected $deleteRequest = DeleteRequest::class;
+    protected $indexRequest = IndexRequest::class;
+    protected $storeRequest = StoreRequest::class;
+    protected $updateRequest = UpdateRequest::class;
+    protected $deleteRequest = DeleteRequest::class;
 
-	public function __construct()
-	{
-		parent::__construct();
+    public function __construct()
+    {
+        parent::__construct();
 
-		$this->orderType = "purchases";
-	}
+        $this->orderType = "purchases";
+    }
 }

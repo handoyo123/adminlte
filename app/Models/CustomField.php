@@ -4,17 +4,15 @@ namespace App\Models;
 
 class CustomField extends BaseModel
 {
-	protected  $table = 'custom_fields';
+    public $timestamps = false;
+    protected $table = 'custom_fields';
+    protected $default = ['xid', 'name'];
 
-	public $timestamps = false;
+    protected $guarded = ['id'];
 
-	protected $default = ['xid', 'name'];
+    protected $hidden = ['id'];
 
-	protected $guarded = ['id'];
+    protected $appends = ['xid'];
 
-	protected $hidden = ['id'];
-
-	protected $appends = ['xid'];
-
-	protected $filterable = ['name'];
+    protected $filterable = ['name'];
 }

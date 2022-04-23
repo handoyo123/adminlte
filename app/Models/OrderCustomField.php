@@ -4,17 +4,15 @@ namespace App\Models;
 
 class OrderCustomField extends BaseModel
 {
-	protected  $table = 'order_custom_fields';
+    public $timestamps = false;
+    protected $table = 'order_custom_fields';
+    protected $default = ['xid', 'field_name'];
 
-	public $timestamps = false;
+    protected $guarded = ['id'];
 
-	protected $default = ['xid', 'field_name'];
+    protected $hidden = ['id'];
 
-	protected $guarded = ['id'];
+    protected $appends = ['xid'];
 
-	protected $hidden = ['id'];
-
-	protected $appends = ['xid'];
-
-	protected $filterable = ['field_name'];
+    protected $filterable = ['field_name'];
 }

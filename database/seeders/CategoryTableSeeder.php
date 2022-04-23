@@ -3,17 +3,22 @@
 namespace Database\Seeders;
 
 use App\Models\Category;
+use Examyou\RestAPI\Exceptions\RelatedResourceNotFoundException;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
 class CategoryTableSeeder extends Seeder
 {
-	/**
-	 * Run the database seeds.
-	 *
-	 * @return void
-	 */
+    /**
+     * Run the database seeds.
+     *
+     * @return void
+     * @throws RelatedResourceNotFoundException
+     * @noinspection PhpUndefinedFieldInspection
+     * @noinspection PhpUndefinedFieldInspection
+     * @noinspection PhpUndefinedFieldInspection
+     */
 
 	public function run()
 	{

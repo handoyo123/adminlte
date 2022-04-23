@@ -12,57 +12,65 @@ use Examyou\RestAPI\Exceptions\ApiException;
 
 class RolesController extends ApiBaseController
 {
-	protected $model = Role::class;
+    protected $model = Role::class;
 
-	protected $indexRequest = IndexRequest::class;
-	protected $storeRequest = StoreRequest::class;
-	protected $updateRequest = UpdateRequest::class;
-	protected $deleteRequest = DeleteRequest::class;
+    protected $indexRequest = IndexRequest::class;
+    protected $storeRequest = StoreRequest::class;
+    protected $updateRequest = UpdateRequest::class;
+    protected $deleteRequest = DeleteRequest::class;
 
-	public function stored(Role $role)
-	{
-		return $this->saveAndUpdatePermissions($role);
-	}
+    public function stored(Role $role)
+    {
+        return $this->saveAndUpdatePermissions($role);
+    }
 
+    /** @noinspection PhpUndefinedFieldInspection */
+    public function saveAndUpdatePermissions($role)
+    {
+        $request = request();
 
-	public function updated(Role $role)
-	{
-		return $this->saveAndUpdatePermissions($role);
-	}
+        if ($request->has('permissions')) {
+            $permissions = [];
+            $allPermissions = $request->permissions;
 
-	public function updating(Role $role)
-	{
-		if ($role->name == 'admin') {
-			throw new ApiException('Admin role cannot be edited');
-		}
+            foreach ($allPermissions as $allPermission) {
+                $permissions[] = $this->getIdFromHash($allPermission);
+            }
+            // dd($role);
+            $role->savePermissions($permissions);
+        }
 
-		return $role;
-	}
+        return $role;
+    }
 
-	public function destroying(Role $role)
-	{
-		if ($role->name == 'admin') {
-			throw new ApiException('Admin role cannot be deleted');
-		}
+    public function updated(Role $role)
+    {
+        return $this->saveAndUpdatePermissions($role);
+    }
 
-		return $role;
-	}
+    /** @noinspection PhpUndefinedFieldInspection */
+    /**
+     * @throws ApiException
+     */
+    public function updating(Role $role)
+    {
+        if ($role->name == 'admin') {
+            throw new ApiException('Admin role cannot be edited');
+        }
 
-	public function saveAndUpdatePermissions($role)
-	{
-		$request = request();
+        return $role;
+    }
 
-		if ($request->has('permissions')) {
-			$permissions = [];
-			$allPermissions = $request->permissions;
+    /** @noinspection PhpUndefinedFieldInspection */
+    /**
+     * @throws ApiException
+     */
+    public function destroying(Role $role)
+    {
+        if ($role->name == 'admin') {
+            throw new ApiException('Admin role cannot be deleted');
+        }
 
-			foreach ($allPermissions as $allPermission) {
-				$permissions[] = $this->getIdFromHash($allPermission);
-			}
-			// dd($role);
-			$role->savePermissions($permissions);
-		}
-
-		return $role;
-	}
+        return $role;
+    }
 }

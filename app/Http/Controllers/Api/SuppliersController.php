@@ -12,19 +12,19 @@ use App\Traits\PartyTraits;
 
 class SuppliersController extends ApiBaseController
 {
-	use PartyTraits;
+    use PartyTraits;
 
-	protected $model = Supplier::class;
+    protected $model = Supplier::class;
 
-	protected $indexRequest = IndexRequest::class;
-	protected $storeRequest = StoreRequest::class;
-	protected $updateRequest = UpdateRequest::class;
-	protected $deleteRequest = DeleteRequest::class;
+    protected $indexRequest = IndexRequest::class;
+    protected $storeRequest = StoreRequest::class;
+    protected $updateRequest = UpdateRequest::class;
+    protected $deleteRequest = DeleteRequest::class;
 
-	public function __construct()
-	{
-		parent::__construct();
+    public function __construct()
+    {
+        parent::__construct();
 
-		$this->userType = "suppliers";
-	}
+        $this->userType = "suppliers";
+    }
 }

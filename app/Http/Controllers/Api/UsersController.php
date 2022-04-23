@@ -12,19 +12,19 @@ use App\Traits\UserTraits;
 
 class UsersController extends ApiBaseController
 {
-	use UserTraits;
+    use UserTraits;
 
-	protected $model = User::class;
+    protected $model = User::class;
 
-	protected $indexRequest = IndexRequest::class;
-	protected $storeRequest = StoreRequest::class;
-	protected $updateRequest = UpdateRequest::class;
-	protected $deleteRequest = DeleteRequest::class;
+    protected $indexRequest = IndexRequest::class;
+    protected $storeRequest = StoreRequest::class;
+    protected $updateRequest = UpdateRequest::class;
+    protected $deleteRequest = DeleteRequest::class;
 
-	public function __construct()
-	{
-		parent::__construct();
+    public function __construct()
+    {
+        parent::__construct();
 
-		$this->userType = "staff_members";
-	}
+        $this->userType = "staff_members";
+    }
 }

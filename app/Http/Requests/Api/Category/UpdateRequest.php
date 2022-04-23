@@ -7,32 +7,30 @@ use Vinkla\Hashids\Facades\Hashids;
 
 class UpdateRequest extends FormRequest
 {
-	/**
-	 * Determine if the user is authorized to make this request.
-	 *
-	 * @return bool
-	 */
+    /**
+     * Determine if the user is authorized to make this request.
+     *
+     * @return bool
+     */
 
-	public function authorize()
-	{
-		return true;
-	}
+    public function authorize(): bool
+    {
+        return true;
+    }
 
-	/**
-	 * Get the validation rules that apply to the request.
-	 *
-	 * @return array
-	 */
-	public function rules()
-	{
-		$convertedId = Hashids::decode($this->route('category'));
-		$id = $convertedId[0];
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array
+     */
+    public function rules(): array
+    {
+        $convertedId = Hashids::decode($this->route('category'));
+        $id = $convertedId[0];
 
-		$rules = [
-			'name'    => 'required',
-			'slug' => 'required|unique:categories,slug,' . $id,
-		];
-
-		return $rules;
-	}
+        return [
+            'name' => 'required',
+            'slug' => 'required|unique:categories,slug,' . $id,
+        ];
+    }
 }

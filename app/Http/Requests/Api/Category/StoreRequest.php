@@ -12,7 +12,7 @@ class StoreRequest extends FormRequest
      * @return bool
      */
 
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
@@ -22,15 +22,13 @@ class StoreRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
 
-        $rules = [
-            'name'    => 'required',
-            'slug'    => 'required|unique:categories,slug',
+        return [
+            'name' => 'required',
+            'slug' => 'required|unique:categories,slug',
         ];
-
-        return $rules;
 
     }
 

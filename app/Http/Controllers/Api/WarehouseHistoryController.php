@@ -8,18 +8,19 @@ use App\Models\WarehouseHistory;
 
 class WarehouseHistoryController extends ApiBaseController
 {
-	protected $model = WarehouseHistory::class;
+    protected $model = WarehouseHistory::class;
 
-	protected $indexRequest = IndexRequest::class;
+    protected $indexRequest = IndexRequest::class;
 
-	public function modifyIndex($query)
-	{
-		$request = request();
+    /** @noinspection PhpUndefinedFieldInspection */
+    public function modifyIndex($query)
+    {
+        $request = request();
 
-		if ($request->has('result_type') && $request->result_type = "customer_supplier") {
-			$query = $query->whereIn('type', ['purchases', 'purchase-returns', 'sales', 'sales-returns', 'payment-out', 'payment-in']);
-		}
+        if ($request->has('result_type') && $request->result_type = "customer_supplier") {
+            $query = $query->whereIn('type', ['purchases', 'purchase-returns', 'sales', 'sales-returns', 'payment-out', 'payment-in']);
+        }
 
-		return $query;
-	}
+        return $query;
+    }
 }

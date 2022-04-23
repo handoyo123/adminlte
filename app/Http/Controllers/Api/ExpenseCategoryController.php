@@ -11,10 +11,10 @@ use App\Models\ExpenseCategory;
 
 class ExpenseCategoryController extends ApiBaseController
 {
-	protected $model = ExpenseCategory::class;
+    protected $model = ExpenseCategory::class;
 
-	protected $indexRequest = IndexRequest::class;
-	protected $storeRequest = StoreRequest::class;
-	protected $updateRequest = UpdateRequest::class;
-	protected $deleteRequest = DeleteRequest::class;
+    protected $indexRequest = IndexRequest::class;
+    protected $storeRequest = StoreRequest::class;
+    protected $updateRequest = UpdateRequest::class;
+    protected $deleteRequest = DeleteRequest::class;
 }

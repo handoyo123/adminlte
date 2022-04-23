@@ -19,7 +19,9 @@
         "trebol/entrust": "^2.0",
         "tymon/jwt-auth": "^1.0",
         "vinkla/hashids": "^9.1",
-        "zanysoft/laravel-zip": "^1.0"
+        "zanysoft/laravel-zip": "^1.0",
+        "ext-json": "*",
+        "ext-mysqli": "*"
     },
     "require-dev": {
         "facade/ignition": "^2.5",

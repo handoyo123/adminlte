@@ -11,7 +11,7 @@ class StoreRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
@@ -20,16 +20,16 @@ class StoreRequest extends FormRequest
      * Get the validation rules that apply to the request.
      *
      * @return array
+     * @noinspection PhpUndefinedFieldInspection
      */
-    public function rules()
+    public function rules(): array
     {
         $rules = [
-            'name'     => 'required',
-            'image'          => 'image|max:2048'
+            'name' => 'required',
+            'image' => 'image|max:2048'
         ];
 
-        if($this->password != '')
-        {
+        if ($this->password != '') {
             $rules['password'] = 'required|min:6';
         }
 

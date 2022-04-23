@@ -11,7 +11,7 @@ class StoreRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
@@ -21,11 +21,11 @@ class StoreRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         $rules = [
-            'mail_from_name'     => 'required',
-            'mail_from_email'     => 'required|email'
+            'mail_from_name' => 'required',
+            'mail_from_email' => 'required|email'
         ];
 
         $rules['mail_host'] = 'required';

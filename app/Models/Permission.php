@@ -5,17 +5,20 @@ namespace App\Models;
 use Trebol\Entrust\Contracts\EntrustPermissionInterface;
 use Trebol\Entrust\Traits\EntrustPermissionTrait;
 
+/**
+ * @method static where(string $string, mixed|string $name)
+ */
 class Permission extends BaseModel implements EntrustPermissionInterface
 {
-	use EntrustPermissionTrait;
+    use EntrustPermissionTrait;
 
-	protected $table = 'permissions';
+    protected $table = 'permissions';
 
-	protected $default = ['xid'];
+    protected $default = ['xid'];
 
-	protected $guarded = ['id', 'created_at', 'updated_at'];
+    protected $guarded = ['id', 'created_at', 'updated_at'];
 
-	protected $hidden = ['id', 'pivot'];
+    protected $hidden = ['id', 'pivot'];
 
-	protected $appends = ['xid'];
+    protected $appends = ['xid'];
 }
