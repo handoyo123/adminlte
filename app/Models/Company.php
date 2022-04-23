@@ -1,4 +1,8 @@
-<?php
+<?php /** @noinspection RedundantSuppression */
+/** @noinspection RedundantSuppression */
+/** @noinspection RedundantSuppression */
+
+/** @noinspection RedundantSuppression */
 
 namespace App\Models;
 

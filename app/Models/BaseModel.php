@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection PhpParameterNameChangedDuringInheritanceInspection */
 
 
 namespace App\Models;

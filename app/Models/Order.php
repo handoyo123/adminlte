@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection RedundantSuppression */
 
 namespace App\Models;
 
@@ -90,6 +90,7 @@ class Order extends BaseModel
         return $this->hasOne(Tax::class, 'id', 'tax_id');
     }
 
+    /** @noinspection PhpUndefinedClassInspection */
     public function shippingAddress(): HasOne
     {
         return $this->hasOne(OrderShippingAddress::class, 'order_id', 'id');

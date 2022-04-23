@@ -1,4 +1,15 @@
-<?php
+<?php /** @noinspection PhpDuplicateArrayKeysInspection */
+/** @noinspection PhpDuplicateArrayKeysInspection */
+/** @noinspection RedundantSuppression */
+/** @noinspection RedundantSuppression */
+/** @noinspection RedundantSuppression */
+/** @noinspection RedundantSuppression */
+/** @noinspection RedundantSuppression */
+/** @noinspection RedundantSuppression */
+/** @noinspection RedundantSuppression */
+/** @noinspection RedundantSuppression */
+
+/** @noinspection RedundantSuppression */
 
 namespace App\Models;
 
