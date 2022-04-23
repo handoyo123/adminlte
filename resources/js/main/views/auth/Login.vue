@@ -1,3 +1,4 @@
+<!--suppress JSValidateTypes, JSValidateTypes -->
 <template>
 	<div class="login-main-container">
 		<a-row class="main-container-div">
@@ -12,17 +13,17 @@
 						<a-card
 							:title="null"
 							class="login-div"
-							:bordered="innerWidth <= 768 ? true : false"
+							:bordered="innerWidth <= 768"
 						>
 							<a-form layout="vertical">
 								<div class="login-logo mb-30">
 									<img
 										class="login-img-logo"
 										:src="appSetting.light_logo_url"
-									/>
+									 alt=""/>
 								</div>
 								<a-alert
-									v-if="onRequestSend.error != ''"
+									v-if="onRequestSend.error !== ''"
 									:message="onRequestSend.error"
 									type="error"
 									show-icon
@@ -87,7 +88,7 @@
 			</a-col>
 			<a-col :xs="0" :sm="0" :md="24" :lg="16">
 				<div class="right-login-div">
-					<img class="right-image" :src="loginBackground" />
+					<img class="right-image" :src="loginBackground"  alt=""/>
 				</div>
 			</a-col>
 		</a-row>

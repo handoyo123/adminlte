@@ -1,3 +1,4 @@
+<!--suppress ALL -->
 <template>
 	<a-modal
 		:visible="visible"

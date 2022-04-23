@@ -152,7 +152,8 @@ export default {
 			crudVariables.tableUrl.value = {
 				url,
 			};
-			crudVariables.table.filterableColumns = filterableColumns;
+			// noinspection JSValidateTypes
+            crudVariables.table.filterableColumns = filterableColumns;
 
 			crudVariables.fetch({
 				page: 1,

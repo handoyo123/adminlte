@@ -1,3 +1,4 @@
+<!--suppress JSValidateTypes -->
 <template>
 	<AdminPageHeader>
 		<template #header>
@@ -108,7 +109,7 @@
 													'currencies_delete'
 												) ||
 													permsArray.includes('admin')) &&
-												appSetting.x_currency_id != record.xid
+												appSetting.x_currency_id !== record.xid
 											"
 											type="primary"
 											@click="showDeleteConfirm(record.xid)"

@@ -1,3 +1,4 @@
+<!--suppress ALL -->
 <template>
 	<div v-if="formData[uploadField] == undefined">
 		<a-upload

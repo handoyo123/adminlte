@@ -73,7 +73,7 @@
 													`${pageObject.permission}_delete`
 												) ||
 													permsArray.includes('admin')) &&
-												record.payment_status == 'unpaid'
+												record.payment_status === 'unpaid'
 											"
 											@click="showDeleteConfirm(record.xid)"
 										>
@@ -140,7 +140,7 @@
 		:headerStyle="{ width: '700px' }"
 	>
 		<template #title>
-			<a-page-header style="padding: 0px">
+			<a-page-header style="padding: 0">
 				<template #title>
 					{{ $t(`menu.${pageObject.langKey}`) }} #{{
 						selectedItem.invoice_number
@@ -188,7 +188,6 @@ import {
     PlusOutlined,
 } from "@ant-design/icons-vue";
 import {Modal, notification} from "ant-design-vue";
-import {useRoute} from "vue-router";
 import fields from "../../views/stock-management/purchases/fields";
 import common from "../../../common/composable/common";
 import datatable from "../../../common/composable/datatable";
@@ -209,7 +208,6 @@ export default {
 		MoreOutlined,
 		DownloadOutlined,
 		ExclamationCircleOutlined,
-		Details,
 		UserInfo,
 		Details,
 		PaymentStatus,
@@ -235,7 +233,6 @@ export default {
 			formatDate,
 			selectedWarehouse,
 		} = common();
-		const route = useRoute();
 		const { t } = useI18n();
 		const detailsDrawerVisible = ref(false);
 
@@ -252,7 +249,8 @@ export default {
 			}
 			datatableVariables.table.pagination.current = 1;
 			datatableVariables.table.pagination.currentPage = 1;
-			datatableVariables.hashable.value = hashableColumns;
+			// noinspection JSValidateTypes
+            datatableVariables.hashable.value = hashableColumns;
 			setupTableColumns();
 			setUrlData();
 		};
@@ -275,7 +273,7 @@ export default {
 			if (
 				tableFilter.searchColumn &&
 				tableFilter.searchString &&
-				tableFilter.searchString != ""
+				tableFilter.searchString !== ""
 			) {
 				datatableVariables.table.searchColumn = tableFilter.searchColumn;
 				datatableVariables.table.searchString = tableFilter.searchString;
@@ -325,10 +323,10 @@ export default {
 				page: datatableVariables.currentPage.value,
 				success: (results) => {
 					const searchResult = find(results, (result) => {
-						return result.xid == selectedItem.value.xid;
+						return result.xid === selectedItem.value.xid;
 					});
 
-					if (searchResult != undefined) {
+					if (searchResult !== undefined) {
 						selectedItem.value = searchResult;
 					}
 				},

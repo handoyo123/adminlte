@@ -1,3 +1,4 @@
+<!--suppress JSValidateTypes, JSValidateTypes -->ValidateTypes -->
 <template>
 	<AdminPageHeader>
 		<template #header>

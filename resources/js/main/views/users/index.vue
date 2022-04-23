@@ -1,3 +1,4 @@
+<!--suppress JSValidateTypes -->
 <template>
 	<AdminPageHeader>
 		<template #header>
@@ -46,7 +47,7 @@
 			:successMessage="successMessage"
 		/>
 
-		<a-row v-if="userType && userType == 'users'">
+		<a-row v-if="userType && userType === 'users'">
 			<a-col :span="24">
 				<a-tabs v-model:activeKey="searchStatus" @change="setUrlData">
 					<a-tab-pane
@@ -62,7 +63,7 @@
 			</a-col>
 		</a-row>
 
-		<a-row v-if="userType && userType != 'users'">
+		<a-row v-if="userType && userType !== 'users'">
 			<a-col :span="24">
 				<a-tabs v-model:activeKey="searchDueType" @change="setUrlData">
 					<a-tab-pane key="all" :tab="`${$t('common.all')}`" />
@@ -72,7 +73,7 @@
 			</a-col>
 		</a-row>
 
-		<a-row :gutter="[15, 15]" style="mb-20">
+		<a-row :style="mb-20" :gutter="[15, 15]">
 			<a-col :xs="24" :sm="24" :md="12" :lg="6" :xl="6">
 				<a-input-group compact>
 					<a-select
@@ -98,7 +99,7 @@
 				</a-input-group>
 			</a-col>
 			<a-col
-				v-if="userType && userType != 'users'"
+				v-if="userType && userType !== 'users'"
 				:xs="24"
 				:sm="24"
 				:md="12"
@@ -175,7 +176,7 @@
 									v-if="
 										(permsArray.includes(`${userType}_delete`) ||
 											permsArray.includes('admin')) &&
-										user.xid != record.xid
+										user.xid !== record.xid
 									"
 									type="primary"
 									@click="showDeleteConfirm(record.xid)"
@@ -270,12 +271,12 @@ export default {
 		});
 
 		const setFormData = () => {
-			if (userType.value == "suppliers") {
+			if (userType.value === "suppliers") {
 				crudVariables.initData.value = { ...supplierInitData };
 				crudVariables.formData.value = { ...supplierInitData };
 				crudVariables.langKey.value = "supplier";
 				tableColumns.value = supplierCustomerColumns;
-			} else if (userType.value == "customers") {
+			} else if (userType.value === "customers") {
 				crudVariables.initData.value = { ...customerInitData };
 				crudVariables.formData.value = { ...customerInitData };
 				crudVariables.langKey.value = "customer";
@@ -291,15 +292,15 @@ export default {
 
 		const setUrlData = () => {
 			crudVariables.crudUrl.value = userType.value;
-			var filterString = "";
-			var extraFilters = {};
-			if (searchStatus.value != undefined && searchStatus.value != "all") {
+            let filterString = "";
+            let extraFilters = {};
+            if (searchStatus.value !== undefined && searchStatus.value !== "all") {
 				filterString += `status eq "${searchStatus.value}"`;
 			}
 			if (
-				searchDueType.value != undefined &&
-				searchDueType.value != "all" &&
-				userType.value != "users"
+				searchDueType.value !== undefined &&
+				searchDueType.value !== "all" &&
+				userType.value !== "users"
 			) {
 				extraFilters.search_due_type = searchDueType.value;
 			}
@@ -314,7 +315,7 @@ export default {
 		};
 
 		watch(route, (newVal, oldVal) => {
-			if (newVal.meta.menuParent == "users") {
+			if (newVal.meta.menuParent === "users") {
 				userType.value = newVal.meta.menuKey;
 
 				searchStatus.value = undefined;

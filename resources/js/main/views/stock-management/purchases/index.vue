@@ -1,3 +1,4 @@
+<!--suppress JSValidateTypes -->
 <template>
 	<AdminPageHeader>
 		<template #header>

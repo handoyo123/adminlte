@@ -1,12 +1,11 @@
+// noinspection JSValidateTypes
+
 import {ref} from "vue";
 import {useI18n} from "vue-i18n";
-import {useStore} from "vuex";
 
 const fields = () => {
 	const { t } = useI18n();
-	const store = useStore();
 	const taxes = ref([]);
-	const warehouses = ref([]);
 	const customers = ref([]);
 	const brands = ref([]);
 	const categories = ref([]);
@@ -14,7 +13,6 @@ const fields = () => {
 
 	const formData = ref({
 		user_id: undefined,
-		tax_id: undefined,
 		category_id: undefined,
 		brand_id: undefined,
 		tax_id: undefined,

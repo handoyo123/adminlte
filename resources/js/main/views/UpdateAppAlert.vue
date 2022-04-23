@@ -1,18 +1,19 @@
+<!--suppress JSValidateTypes -->
 <template>
 	<a-row
 		class="mt-20"
-		v-if="appSetting.update_app_notification && productStatus == 'update_available'"
+		v-if="appSetting.update_app_notification && productStatus === 'update_available'"
 	>
 		<a-col :span="24">
 			<a-alert
-				v-if="productStatus == 'update_available'"
+				v-if="productStatus === 'update_available'"
 				type="success"
 				:message="$t('update_app.update_available')"
 				showIcon
 			>
 				<template #description>
 					{{
-						$t("messages.new_app_version_avaialbe", [product.product.version])
+						$t("messages.new_app_version_available", [product.product.version])
 					}}
 				</template>
 				<template #closeText>
@@ -62,7 +63,7 @@ export default defineComponent({
 						.then((res) => {
 							product.value = res.data;
 
-							if (product.value.product.version != appVersion) {
+							if (product.value.product.version !== appVersion) {
 								productStatus.value = "update_available";
 							} else {
 								productStatus.value = "success";

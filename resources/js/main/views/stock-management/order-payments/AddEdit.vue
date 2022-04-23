@@ -1,3 +1,4 @@
+<!--suppress JSValidateTypes -->
 <template>
 	<a-modal
 		:visible="visible"
@@ -80,7 +81,7 @@
 						/>
 						<small style="color: #7c8db5 !important">
 							{{ $t("common.max_amount") }}
-							<span v-if="addEditType == 'edit'">
+							<span v-if="addEditType === 'edit'">
 								{{
 									formatAmountCurrency(data.due_amount + editItemAmount)
 								}}
@@ -114,8 +115,8 @@
 				<template #icon>
 					<SaveOutlined />
 				</template>
-				{{ addEditType == "add" ? $t("common.create") : $t("common.update") }}
-			</a-button>
+                {{ addEditType === "add" ? $t("common.create") : $t("common.update") }}
+            </a-button>
 			<a-button key="back" @click="onClose">
 				{{ $t("common.cancel") }}
 			</a-button>

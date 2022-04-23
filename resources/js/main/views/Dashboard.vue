@@ -1,7 +1,8 @@
+<!--suppress JSValidateTypes, JSValidateTypes -->
 <template>
 	<AdminPageHeader>
 		<template #header>
-			<a-page-header :title="$t(`menu.dashboard`)" style="padding: 0px" />
+			<a-page-header :title="$t(`menu.dashboard`)" style="padding: 0" />
 		</template>
 	</AdminPageHeader>
 
@@ -104,26 +105,23 @@
 			<a-col :xs="24" :sm="24" :md="12" :lg="18" :xl="18">
 				<a-card :title="$t('dashboard.sales_purchases')">
 					<PurchaseSales :data="responseData" />
-					<template
-						v-if="
+                    <template v-if="
 							permsArray.includes('sales_view') ||
 							permsArray.includes('admin')
-						"
-						#extra
-					>
-						<a-button
-							class="mt-10"
-							type="link"
-							@click="
+						" #extra>
+                        <a-button
+                            class="mt-10"
+                            type="link"
+                            @click="
 								$router.push({
 									name: 'admin.stock.sales.index',
 								})
 							"
-						>
-							{{ $t("common.view_all") }}
-							<DoubleRightOutlined />
-						</a-button>
-					</template>
+                        >
+                            {{ $t("common.view_all") }}
+                            <DoubleRightOutlined />
+                        </a-button>
+                    </template>
 				</a-card>
 			</a-col>
 		</a-row>
@@ -136,7 +134,7 @@
 					permsArray.includes('purchase_returns_view') ||
 					permsArray.includes('sales_returns_view') ||
 					permsArray.includes('admin')) &&
-				activeOrderType != ''
+				activeOrderType !== ''
 			"
 		>
 			<a-col :span="24">
@@ -327,32 +325,29 @@
 						:pagination="false"
 					>
 						<template #bodyCell="{ column, record }">
-							<template v-if="column.dataIndex == 'customer_id'">
+							<template v-if="column.dataIndex === 'customer_id'">
 								<user-info :user="record.customer" />
 							</template>
-							<template v-if="column.dataIndex == 'total_amount'">
+							<template v-if="column.dataIndex === 'total_amount'">
 								{{ formatAmountCurrency(record.total_amount) }} <br />
 								{{ $t("dashboard.total_sales") }} :
 								{{ record.total_sales }}
 							</template>
 						</template>
 					</a-table>
-					<template
-						v-if="
+                    <template v-if="
 							permsArray.includes('users_view') ||
 							permsArray.includes('admin')
-						"
-						#extra
-					>
-						<a-button
-							class="mt-10"
-							type="link"
-							@click="$router.push({ name: 'admin.reports.users.index' })"
-						>
-							{{ $t("common.view_all") }}
-							<DoubleRightOutlined />
-						</a-button>
-					</template>
+						" #extra>
+                        <a-button
+                            class="mt-10"
+                            type="link"
+                            @click="$router.push({ name: 'admin.reports.users.index' })"
+                        >
+                            {{ $t("common.view_all") }}
+                            <DoubleRightOutlined />
+                        </a-button>
+                    </template>
 				</a-card>
 			</a-col>
 		</a-row>
@@ -411,7 +406,6 @@ export default {
 		const { t } = useI18n();
 		const {
 			formatAmountCurrency,
-			appSetting,
 			user,
 			permsArray,
 			selectedWarehouse,
@@ -499,7 +493,7 @@ export default {
 <style lang="less">
 .ant-card-extra,
 .ant-card-head-title {
-	padding: 0px;
+	padding: 0;
 }
 
 .ant-card-head-title {

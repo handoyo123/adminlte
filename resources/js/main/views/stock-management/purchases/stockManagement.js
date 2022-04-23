@@ -1,3 +1,5 @@
+// noinspection JSValidateTypes
+
 import {reactive, ref, watch} from "vue";
 import {useRoute} from "vue-router";
 import {debounce} from "lodash-es";
@@ -46,7 +48,7 @@ const stockManagement = () => {
 	const fetchProducts = debounce((value) => {
 		state.products = [];
 
-		if (value != "") {
+		if (value !== "") {
 			state.productFetching = true;
 			let url = `search-product`;
 
@@ -81,14 +83,13 @@ const stockManagement = () => {
 	};
 
 	const recalculateValues = (product) => {
-		var quantityValue = parseFloat(product.quantity);
-		var maxQuantity = parseFloat(product.stock_quantity);
-		var orderItemId = product.item_id;
-		const unitPrice = parseFloat(product.unit_price);
+        let quantityValue = parseFloat(product.quantity);
+        const maxQuantity = parseFloat(product.stock_quantity);
+        const unitPrice = parseFloat(product.unit_price);
 
 		// Check if entered quantity value is greater
 		quantityValue =
-			quantityValue > maxQuantity && (orderPageObject.value.type == "sales" || orderPageObject.value.type == "purchase-returns")
+			quantityValue > maxQuantity && (orderPageObject.value.type === "sales" || orderPageObject.value.type === "purchase-returns")
 				? maxQuantity
 				: quantityValue;
 
@@ -97,13 +98,13 @@ const stockManagement = () => {
 		const totalDiscount = discountRate > 0 ? ((discountRate / 100) * (unitPrice)) : 0;
 		const totalPriceAfterDiscount = unitPrice - totalDiscount;
 
-		var taxAmount = 0;
-		var subtotal = totalPriceAfterDiscount;
-		var singleUnitPrice = unitPrice;
+        let taxAmount = 0;
+        let subtotal = totalPriceAfterDiscount;
+        let singleUnitPrice = unitPrice;
 
-		// Tax Amount
+        // Tax Amount
 		if (product.tax_rate > 0) {
-			if (product.tax_type == "inclusive") {
+			if (product.tax_type === "inclusive") {
 				singleUnitPrice = (totalPriceAfterDiscount * 100) / (100 + product.tax_rate);
 				taxAmount = (singleUnitPrice) * (product.tax_rate / 100);
 			} else {
@@ -113,24 +114,22 @@ const stockManagement = () => {
 			}
 		}
 
-		const newObject = {
-			...product,
-			total_discount: totalDiscount * quantityValue,
-			subtotal: subtotal * quantityValue,
-			quantity: quantityValue,
-			total_tax: taxAmount * quantityValue,
-			max_quantity: maxQuantity,
-			single_unit_price: singleUnitPrice
-		};
-
-		return newObject;
+        return {
+            ...product,
+            total_discount: totalDiscount * quantityValue,
+            subtotal: subtotal * quantityValue,
+            quantity: quantityValue,
+            total_tax: taxAmount * quantityValue,
+            max_quantity: maxQuantity,
+            single_unit_price: singleUnitPrice
+        };
 	};
 
 	const quantityChanged = (record) => {
 		const newResults = [];
 
 		selectedProducts.value.map((selectedProduct) => {
-			if (selectedProduct.xid == record.xid) {
+			if (selectedProduct.xid === record.xid) {
 				const newValueCalculated = recalculateValues(record);
 				newResults.push(newValueCalculated);
 			} else {
@@ -148,8 +147,8 @@ const stockManagement = () => {
 		selectedProducts.value.map((selectedProduct) => {
 			total += selectedProduct.subtotal;
 		});
-		const discountAmount = formData.value.discount != "" ? parseFloat(formData.value.discount) : 0;
-		const taxRate = formData.value.tax_rate != "" ? parseFloat(formData.value.tax_rate) : 0;
+		const discountAmount = formData.value.discount !== "" ? parseFloat(formData.value.discount) : 0;
+		const taxRate = formData.value.tax_rate !== "" ? parseFloat(formData.value.tax_rate) : 0;
 
 		selectedProducts.value.map((selectedProduct) => {
 			taxAmount += selectedProduct.total_tax;
@@ -194,7 +193,7 @@ const stockManagement = () => {
 				removedOrderItemsIds.value = [...removedOrderItemsIds.value, selectedProduct.item_id];
 			}
 
-			if (selectedProduct.xid != product.xid) {
+			if (selectedProduct.xid !== product.xid) {
 				newResults.push({
 					...selectedProduct,
 					sn: counter,
@@ -209,15 +208,14 @@ const stockManagement = () => {
 		selectedProducts.value = newResults;
 
 		// Remove deleted product id from lists
-		const filterProductIdArray = selectedProductIds.value.filter((newId) => {
-			return newId != product.xid;
-		});
-		selectedProductIds.value = filterProductIdArray;
+        selectedProductIds.value = selectedProductIds.value.filter((newId) => {
+            return newId !== product.xid;
+        });
 		recalculateFinalTotal();
 	};
 
 	const taxChanged = (value, option) => {
-		formData.value.tax_rate = value == undefined ? 0 : option.tax.rate;
+		formData.value.tax_rate = value === undefined ? 0 : option.tax.rate;
 		recalculateFinalTotal();
 	};
 
@@ -236,14 +234,14 @@ const stockManagement = () => {
 	// For Add Edit
 	const onAddEditSubmit = () => {
 		const record = selectedProducts.value.filter(
-			(selectedProduct) => selectedProduct.xid == addEditFormData.value.id
+			(selectedProduct) => selectedProduct.xid === addEditFormData.value.id
 		);
 
 		const selecteTax = taxes.value.filter(
-			(tax) => tax.xid == addEditFormData.value.tax_id
+			(tax) => tax.xid === addEditFormData.value.tax_id
 		);
 
-		const taxType = addEditFormData.value.tax_type != undefined ? addEditFormData.value.tax_type : 'exclusive';
+		const taxType = addEditFormData.value.tax_type !== undefined ? addEditFormData.value.tax_type : 'exclusive';
 
 		const newData = {
 			...record[0],

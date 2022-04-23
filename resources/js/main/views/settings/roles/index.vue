@@ -1,3 +1,4 @@
+<!--suppress JSValidateTypes -->
 <template>
 	<AdminPageHeader>
 		<template #header>
@@ -68,7 +69,7 @@
 											v-if="
 												(permsArray.includes('roles_edit') ||
 													permsArray.includes('admin')) &&
-												record.name != 'admin'
+												record.name !== 'admin'
 											"
 											type="primary"
 											@click="editItem(record)"
@@ -80,7 +81,7 @@
 											v-if="
 												(permsArray.includes('roles_delete') ||
 													permsArray.includes('admin')) &&
-												record.name != 'admin'
+												record.name !== 'admin'
 											"
 											type="primary"
 											@click="showDeleteConfirm(record.xid)"

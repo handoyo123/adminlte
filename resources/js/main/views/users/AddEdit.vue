@@ -1,3 +1,4 @@
+<!--suppress ALL -->
 <template>
 	<a-drawer
 		:title="pageTitle"

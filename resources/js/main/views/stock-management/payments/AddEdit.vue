@@ -1,3 +1,4 @@
+<!--suppress JSValidateTypes, JSValidateTypes -->ValidateTypes -->
 <template>
 	<a-drawer
 		:title="pageTitle"
@@ -41,7 +42,7 @@
 				</a-col>
 			</a-row>
 
-			<a-row :gutter="16" v-if="addEditType == 'add'">
+			<a-row :gutter="16" v-if="addEditType === 'add'">
 				<a-col :xs="24" :sm="24" :md="24" :lg="24">
 					<a-form-item
 						:label="$t('payments.amount')"
@@ -138,7 +139,7 @@
 
 			<a-divider class="mt-0" />
 
-			<div v-if="addEditType == 'add'">
+			<div v-if="addEditType === 'add'">
 				<a-row :gutter="16">
 					<a-col :xs="24" :sm="24" :md="24" :lg="24">
 						<a-form-item>
@@ -170,8 +171,8 @@
 					<template #icon>
 						<SaveOutlined />
 					</template>
-					{{ addEditType == "add" ? $t("common.create") : $t("common.update") }}
-				</a-button>
+                    {{ addEditType === "add" ? $t("common.create") : $t("common.update") }}
+                </a-button>
 				<a-button key="back" @click="onClose">
 					{{ $t("common.cancel") }}
 				</a-button>
@@ -232,7 +233,7 @@ export default defineComponent({
 		const onSubmit = () => {
 			const invoices = [];
 
-			if (props.addEditType == "add") {
+			if (props.addEditType === "add") {
 				forEach(settleInvoiceRef.value.invoices, (invoice) => {
 					invoices.push({
 						order_id: invoice.xid,

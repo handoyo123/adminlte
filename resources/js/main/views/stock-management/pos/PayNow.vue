@@ -1,3 +1,4 @@
+<!--suppress JSValidateTypes -->
 <template>
 	<a-drawer
 		:title="$t('payments.order_payment')"

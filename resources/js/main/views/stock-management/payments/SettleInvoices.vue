@@ -1,3 +1,4 @@
+<!--suppress ALL -->
 <template>
 	<a-row>
 		<a-col :span="24">

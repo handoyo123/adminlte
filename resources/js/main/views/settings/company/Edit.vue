@@ -1,3 +1,4 @@
+<!--suppress JSValidateTypes, JSValidateTypes -->ValidateTypes -->ValidateTypes -->
 <template>
 	<AdminPageHeader>
 		<template #header>
@@ -162,7 +163,7 @@
 										{{ $t("company.dark") }}
 									</a-select-option>
 									<a-select-option
-										v-if="appThemeMode != 'dark'"
+										v-if="appThemeMode !== 'dark'"
 										key="light"
 										value="light"
 									>

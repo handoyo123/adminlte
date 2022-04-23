@@ -1,3 +1,4 @@
+<!--suppress ALL -->
 <template>
 	<a-card
 		class="page-content-sub-header breadcrumb-left-border"
@@ -821,7 +822,6 @@ export default {
 				tax_id: undefined,
 				category_id: undefined,
 				brand_id: undefined,
-				tax_id: undefined,
 				tax_rate: 0,
 				tax_amount: 0,
 				discount: 0,

@@ -131,9 +131,7 @@
 													permsArray.includes(
 														'translations_edit'
 													) || permsArray.includes('admin')
-												) || record.key == 'en'
-													? true
-													: false
+												) || record.key === 'en'
 											"
 										/>
 									</template>
@@ -144,7 +142,7 @@
 													'translations_edit'
 												) ||
 													permsArray.includes('admin')) &&
-												record.key != 'en'
+												record.key !== 'en'
 											"
 											type="primary"
 											@click="editItem(record)"
@@ -158,7 +156,7 @@
 													'translations_delete'
 												) ||
 													permsArray.includes('admin')) &&
-												record.key != 'en'
+												record.key !== 'en'
 											"
 											type="primary"
 											@click="showDeleteConfirm(record.xid)"
@@ -210,7 +208,8 @@ export default {
 			crudVariables.tableUrl.value = {
 				url,
 			};
-			crudVariables.table.filterableColumns = filterableColumns;
+			// noinspection JSValidateTypes
+            crudVariables.table.filterableColumns = filterableColumns;
 
 			crudVariables.fetch({
 				page: 1,

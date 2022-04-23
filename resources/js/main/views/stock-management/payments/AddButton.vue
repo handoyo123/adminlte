@@ -68,7 +68,8 @@ export default defineComponent({
 
 		const addEditSuccess = () => {
 			visible.value = false;
-			formData.value = { ...initData };
+			// noinspection JSValidateTypes
+            formData.value = { ...initData };
 			emit("onAddSuccess");
 		};
 

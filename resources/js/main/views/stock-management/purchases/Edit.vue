@@ -1,3 +1,4 @@
+<!--suppress ALL -->
 <template>
 	<AdminPageHeader>
 		<template #header>

@@ -1,3 +1,4 @@
+<!--suppress JSValidateTypes -->
 <template>
 	<a-row>
 		<a-col :span="24">
@@ -54,14 +55,13 @@ export default defineComponent({
 		const datatableVariables = datatable();
 
 		onMounted(() => {
-			const propsData = props;
-			getData(propsData);
+            getData(props);
 		});
 
 		const getData = (propsData) => {
 			const filters = {};
 
-			if (propsData.user_id && propsData.user_id != undefined) {
+			if (propsData.user_id) {
 				filters.user_id = propsData.user_id;
 			}
 

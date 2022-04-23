@@ -1,3 +1,5 @@
+// noinspection JSValidateTypes
+
 import {reactive, ref} from "vue";
 import {debounce, forEach, forOwn, includes} from "lodash-es";
 
@@ -30,21 +32,21 @@ const datatable = () => {
 	};
 
 	const generateUrl = (limit, offset) => {
-		var url = tableUrl.value.url;
-		var filterString = "";
-		var hashableString = "";
-		var trimString = false;
-		var trimHashable = false;
+        let url = tableUrl.value.url;
+        let filterString = "";
+        let hashableString = "";
+        let trimString = false;
+        let trimHashable = false;
 
-		// Filters
-		if ('filterString' in tableUrl.value && tableUrl.value.filterString != "" && typeof tableUrl.value.filterString == "string") {
+        // Filters
+		if ('filterString' in tableUrl.value && tableUrl.value.filterString !== "" && typeof tableUrl.value.filterString == "string") {
 			filterString += `${tableUrl.value.filterString} and `;
 			trimString = true;
 		}
 
 		if (typeof tableUrl.value.filters == "object") {
 			forOwn(tableUrl.value.filters, (value, key) => {
-				if (value != undefined && value != "") {
+				if (value !== undefined && value !== "") {
 					filterString += `${key} eq "${value}" and `;
 					trimString = true;
 
@@ -57,13 +59,13 @@ const datatable = () => {
 			});
 		}
 
-		if (table.searchColumn != undefined && table.searchString != "") {
+		if (table.searchColumn !== undefined && table.searchString !== "") {
 			filterString += `${table.searchColumn} lk "%${table.searchString}%" and `;
 			trimString = true;
 			table.filterLoading = true;
-		} else if (table.searchString != "" && table.filterableColumns.length > 0) {
-			var newSearchString = "";
-			forEach(table.filterableColumns, (filterColumn) => {
+		} else if (table.searchString !== "" && table.filterableColumns.length > 0) {
+            let newSearchString = "";
+            forEach(table.filterableColumns, (filterColumn) => {
 				newSearchString += `${filterColumn.key} lk "%${table.searchString}%" or `;
 			});
 
@@ -73,9 +75,9 @@ const datatable = () => {
 			}
 			table.filterLoading = true;
 		}
-		if (filterString.length > 0 && trimString == true) {
+		if (filterString.length > 0 && trimString === true) {
 			url += `&filters=${encodeURIComponent(filterString.substring(0, filterString.length - 5))}`;
-		} else if (filterString.length > 0 && trimString == false) {
+		} else if (filterString.length > 0 && trimString === false) {
 			url += `&filters=${encodeURIComponent(filterString)}`;
 		}
 
@@ -86,7 +88,7 @@ const datatable = () => {
 		// like ?order_type=purchase
 		if (tableUrl.value.extraFilters && typeof tableUrl.value.extraFilters == "object") {
 			forOwn(tableUrl.value.extraFilters, (value, key) => {
-				if (value != undefined && value != "") {
+				if (value !== undefined && value !== "") {
 					url += `&${key}=${value}`;
 
 					// May be Hashable
@@ -100,7 +102,7 @@ const datatable = () => {
 
 		// Order
 		if (table.sorter && table.sorter.field) {
-			const sortOrder = table.sorter.order == "ascend" ? "asc" : "desc";
+			const sortOrder = table.sorter.order === "ascend" ? "asc" : "desc";
 			url += `&order=${table.sorter.field} ${sortOrder}`;
 		} else {
 			url += "&order=id desc";
@@ -151,7 +153,7 @@ const datatable = () => {
 			table.pagination = pagination;
 			table.filterLoading = false;
 
-			if (params.success != undefined) {
+			if (params.success !== undefined) {
 				params.success(data);
 			}
 		});

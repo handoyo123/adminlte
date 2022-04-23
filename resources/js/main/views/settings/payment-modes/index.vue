@@ -91,7 +91,7 @@
 							>
 								<template #bodyCell="{ column, record }">
 									<template v-if="column.dataIndex === 'action'">
-										<span v-if="record.name.toLowerCase() != 'cash'">
+										<span v-if="record.name.toLowerCase() !== 'cash'">
 											<a-button
 												v-if="
 													permsArray.includes(
@@ -161,7 +161,8 @@ export default {
 			crudVariables.tableUrl.value = {
 				url,
 			};
-			crudVariables.table.filterableColumns = filterableColumns;
+			// noinspection JSValidateTypes
+            crudVariables.table.filterableColumns = filterableColumns;
 
 			crudVariables.fetch({
 				page: 1,

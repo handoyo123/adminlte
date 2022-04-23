@@ -1,3 +1,4 @@
+<!--suppress JSValidateTypes -->
 <template>
 	<AdminPageHeader>
 		<template #header>
@@ -111,7 +112,7 @@
 													'warehouses_delete'
 												) ||
 													permsArray.includes('admin')) &&
-												appSetting.x_warehouse_id != record.xid
+												appSetting.x_warehouse_id !== record.xid
 											"
 											type="primary"
 											@click="showDeleteConfirm(record.xid)"

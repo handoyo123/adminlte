@@ -1,3 +1,4 @@
+<!--suppress JSValidateTypes -->
 <template>
 	<a-row>
 		<a-col :span="24">
@@ -15,12 +16,12 @@
 							{{ formatDate(record.date) }}
 						</template>
 						<template v-if="column.dataIndex === 'payment_type'">
-							{{
-								record.payment_type == "in"
-									? $t("menu.payment_in")
-									: $t("menu.payment_out")
-							}}
-						</template>
+                            {{
+                                record.payment_type === "in"
+                                    ? $t("menu.payment_in")
+                                    : $t("menu.payment_out")
+                            }}
+                        </template>
 						<template v-if="column.dataIndex === 'user_id'">
 							<UserInfo :user="record.user" />
 						</template>
@@ -59,14 +60,13 @@ export default defineComponent({
 		const datatableVariables = datatable();
 
 		onMounted(() => {
-			const propsData = props;
-			getData(propsData);
+            getData(props);
 		});
 
 		const getData = (propsData) => {
 			const filters = {};
 
-			if (propsData.user_id && propsData.user_id != undefined) {
+			if (propsData.user_id) {
 				filters.user_id = propsData.user_id;
 			}
 

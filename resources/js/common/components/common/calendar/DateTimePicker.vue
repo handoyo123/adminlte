@@ -1,3 +1,5 @@
+<!--suppress ALL -->
+
 <template>
 	<a-date-picker
 		v-model:value="dateTimeValue"

@@ -1,3 +1,4 @@
+<!--suppress JSValidateTypes -->
 <template>
 	<a-select
 		v-model:value="searchTerm"
@@ -74,7 +75,7 @@ export default defineComponent({
 		const fetchProducts = debounce((value) => {
 			state.products = [];
 
-			if (value != "") {
+			if (value !== "") {
 				state.fetching = true;
 				const filterString = `name lk "%${value}%"`;
 				let url = `products?fields=xid,name&filters=${encodeURIComponent(

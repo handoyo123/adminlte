@@ -1,3 +1,4 @@
+<!--suppress ALL -->
 <template>
 	<a-drawer
 		:title="pageTitle"
@@ -260,7 +261,7 @@
 										<a-button
 											v-if="formData.item_code == ''"
 											type="text"
-											size="small"
+											size="middle"
 											@click="generateBarCode"
 										>
 											<template #icon>

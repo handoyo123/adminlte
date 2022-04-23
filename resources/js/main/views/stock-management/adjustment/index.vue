@@ -1,3 +1,4 @@
+<!--suppress JSValidateTypes -->
 <template>
 	<AdminPageHeader>
 		<template #header>
@@ -43,7 +44,7 @@
 			:successMessage="successMessage"
 		/>
 
-		<a-row style="mb-20" :gutter="[15, 15]">
+		<a-row :style="mb-20" :gutter="[15, 15]">
 			<a-col :xs="24" :sm="24" :md="8" :lg="4" :xl="4">
 				<ProductSearchInput
 					@valueChanged="
