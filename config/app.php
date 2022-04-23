@@ -1,6 +1,9 @@
 <?php
 
 use App\Providers\SmtpSettingsProvider;
+use Examyou\LaravelInstaller\Providers\LaravelInstallerServiceProvider;
+use Examyou\RestAPI\Facades\ApiRoute;
+use Examyou\RestAPI\Providers\ApiServiceProvider;
 
 return [
 
@@ -168,8 +171,8 @@ return [
 		/*
          * Package Service Providers...
          */
-		\Examyou\RestAPI\Providers\ApiServiceProvider::class,
-		\Examyou\LaravelInstaller\Providers\LaravelInstallerServiceProvider::class,
+		ApiServiceProvider::class,
+		LaravelInstallerServiceProvider::class,
 
 		/*
          * Application Service Providers...
@@ -234,7 +237,7 @@ return [
 		'Validator' => Illuminate\Support\Facades\Validator::class,
 		'View' => Illuminate\Support\Facades\View::class,
 
-		"ApiRoute" => \Examyou\RestAPI\Facades\ApiRoute::class
+		"ApiRoute" => ApiRoute::class
 	],
 
 ];
